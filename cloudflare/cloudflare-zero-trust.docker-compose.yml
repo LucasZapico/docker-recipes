@@ -1,0 +1,14 @@
+# docker run cloudflare/cloudflared:latest tunnel --no-autoupdate run --token <token>
+#
+
+services:
+  cloudflare:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflare
+    restart: unless-stopped
+    env_file: 
+      - .env.cloudflare
+    command: tunnel --no-autoupdate run --token ${TOKEN}
+
+#
+# docker compose --file cloudflare-zero-trust.docker-compose.yml --env-file .env.cloudflare up -d
