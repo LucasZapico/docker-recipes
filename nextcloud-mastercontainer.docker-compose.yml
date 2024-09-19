@@ -1,0 +1,29 @@
+version: '3'
+services:
+  nextcloud-aio-mastercontainer:
+    image: nextcloud/all-in-one:latest
+    container_name: nextcloud-aio-mastercontainer
+    init: true
+    restart: always
+    ports:
+      - "81:80"
+      - "8081:8080"
+      - "8443:8443"
+    volumes:
+      - "nextcloud_aio_mastercontainer:/mnt/docker-aio-config"
+      - "/home/za/srv/nextcloud/apps:/var/www/html/custom_apps"
+      - "/home/za/srv/nextcloud/config:/var/www/html/config"
+      - "/home/za/srv/nextcloud/data:/var/www/html/data"
+      - "/home/za/srv/nextcloud/theme:/var/www/html/theme"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    labels: 
+      # - "traefik.enable=true"
+      # - "traefik.http.routers.jellyfin.entrypoints=web"
+      # - "traefik.http.routers.nextcloud.rule=Host(`za.nextcloud.local`)"
+      # - "traefik.docker.network=traefik-net"
+      # - traefik.http.services.nextcloud.loadbalancer.server.port=8096
+      # - traefik.frontend.entryPoints=web, websecure
+
+volumes:
+  nextcloud_aio_mastercontainer:
+    name: nextcloud_aio_mastercontainer
