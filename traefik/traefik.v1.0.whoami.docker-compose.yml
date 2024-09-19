@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  whoami:
+    # A container that exposes an API to show its IP address
+    image: traefik/whoami
+    container_name: traefik-whoami
+    networks: 
+      - traefik-net
+    labels:
+      - "traefik.http.routers.whoami.rule=Host(`whoami.docker.localhost`)"
+      - "traefik.docker.network=traefik-net"
+networks:
+  traefik-net:
+    name: traefik-net
+    driver: bridge

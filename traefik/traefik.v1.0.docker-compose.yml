@@ -1,0 +1,64 @@
+# docker run -d --restart unless-stopped --name traefik -p 8080:8080 -p 80:80 -v $PWD/traefik.toml:/etc/traefik/traefik.toml traefik
+
+services:
+  traefik:
+    env_file:
+      - .env.traefik
+    build:
+      context: .
+      dockerfile: traefik.Dockerfile
+    image: traefik:latest
+    container_name: traefik.v1.0
+
+    restart: unless-stopped
+    security_opt: 
+      - no-new-privileges:true
+    volumes:
+      - /home/za/.certs/acme.json:/acme.json
+      # - /etc/localtime:/etc/localtime:ro
+      - /home/za/configs/traefik/traefik.yaml:/etc/traefik/traefik.yml
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    ports:
+      # remove port 8080 for production
+      - 8080:8080
+      - 80:80
+      - 443:443
+    networks:
+      - traefik-net
+    environment:
+      - foo="foo"
+      # - CF_API_EMAIL=${CF_API_EMAIL}
+      # - CF_DNS_API_TOKEN=${CF_DNS_API_TOKEN}
+      # - CF_ZONE_API_TOKEN=${CF_ZONE_API_TOKEN}
+      # - CF_API_KEY=${CF_API_KEY}
+    env_file: 
+     - "/home/za/configs/traefik/.env"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.traefik.entrypoints="http https"
+      - traefik.http.routers.traefik.rule=Host(`za.traefikdash.local`)
+      # - traefik.docker.network=intnet
+      - "traefik.http.services.traefik.loadbalancer.server.port=8080"
+      # - "traefik.http.middlewares.traefik-auth.basicauth.user=admin:PASSWORD_HERE"
+      # - "traefik.http.middlewares.traefik-https-redirect.redirectscheme.scheme=https"
+      # - "traefik.http.routers.traefik.middlewares=traefik-https-redirect"
+      # - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https"
+      # - "traefik.http.routers.traefik-secure.tls=true"
+      # - "traefik.http.routers.traefik.tls.certresolver=letsencrypt"
+      # - "traefik.http.routers.traefik.secure.tls.certresolver=cloudflare"
+      # - traefik.http.routers.traefik-secure.tls.domains[0].main=za.traefikdash.local
+      - traefik.http.routers.traefik-secure.service=api@internal
+      
+      
+networks:
+
+  traefik-net:
+    name: traefik-net
+    attachable: true
+    driver: bridge
+    # external: true
+
+## 
+## Reference 
+#
+## docker compose --file <path/to/>traefik.v1.0.docker-compose.yml --env-file <path/to/>.env.traefik up --build -d
