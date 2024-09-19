@@ -1,0 +1,19 @@
+# docker run -d -p 8000:8000 -p 9443:9443 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
+###
+###
+services: 
+  portainer: 
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    restart: unless-stopped
+    ports: 
+      - 9443:9443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+      - /home/za/certs:/certs
+volumes:
+  portainer_data:
+
+
+## docker compose --file ./portainer.docker-compose.yml up --build -d
