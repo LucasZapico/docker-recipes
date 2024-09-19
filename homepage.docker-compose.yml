@@ -1,0 +1,15 @@
+services:
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: homepage
+    env_file: 
+      - .env.homepage # not used at build, exposed to service in container
+    ports:
+      - 3000:3000
+    environment:
+      - HOMEPAGE_JELLYFIN_API_KEY=$HOMEPAGE_JELLYFIN_API_KEY
+    volumes:
+      - /home/za/srv/homepage/config:/app/config # Make sure your local config directory exists
+      - /var/run/docker.sock:/var/run/docker.sock # (optional) For docker integrations
+
+# docker compose --env-file .env.homepage --file homepage.docker-compose.yml up --build -d
