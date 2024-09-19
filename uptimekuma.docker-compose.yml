@@ -1,0 +1,17 @@
+version: '3'
+services:
+  uptime-kuma:
+    image: louislam/uptime-kuma:1
+    container_name: uptime-kuma
+    restart: always
+    ports:
+      - 3222:3001
+    volumes:
+      - uptime-kuma:/app/data
+     
+volumes:
+  uptime-kuma:
+
+
+
+## docker compose --file ./uptimekuma.docker-compose.yml up --build -d
