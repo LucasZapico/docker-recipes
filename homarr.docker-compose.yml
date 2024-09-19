@@ -1,0 +1,19 @@
+
+################
+#     Homarr - A simple, yet powerful dashboard for your server.     #
+################
+services:
+  homarr:
+    container_name: homarr
+    image: ghcr.io/ajnart/homarr:latest
+    restart: unless-stopped
+    # environment: 
+    #   - DEFAULT_COLOR_SCHEME="dark"
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /var/run/docker.sock:/var/run/docker.sock # Optional, only if you want docker integration
+      - /home/za/srv/homarr/configs:/app/data/configs
+      - /home/za/srv/homarr/icons:/app/public/icons
+      - /home/za/srv/homarr/data:/data
+    ports:
+      - '7575:7575'
