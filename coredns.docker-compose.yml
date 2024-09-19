@@ -1,0 +1,14 @@
+# docker run -p 53:53 --name coredns  --restart=always  coredns/coredns:latest
+# docker run -p 53:53 --name coredns  --restart=always  coredns/coredns:latest -d
+# docker compose --file coredns.docker-compose.yml up
+
+version: "3"
+services: 
+  coredns: 
+    image: coredns/coredns
+    container_name: coredns
+    restart: unless-stopped
+#   ports: 
+#    - 53:53
+    volumes:
+     - ~/Corefile:/Corefile
