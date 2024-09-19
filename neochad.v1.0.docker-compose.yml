@@ -1,0 +1,23 @@
+# docker run -w /root -it --name neochad --rm alpine:latest sh -uelic '
+#  apk add git nodejs neovim ripgrep build-base wget --update
+#  git clone https://github.com/NvChad/starter ~/.config/nvim
+#  nvim
+#  '
+
+# TODO: debug - not working
+version: '3'
+services:
+  neochad:
+    image: alpine:latest
+    user: 0:0
+    container_name: neochad.v1.0
+    working_dir: /root
+    command: sh -uelic 'apk add git nodejs neovim ripgrep build-base wget --update && git clone https://github.com/NvChad/starter ~/.config/nvim && nvim'
+    tty: true
+    stdin_open: true
+    restart: 'no'
+
+## 
+## Reference 
+#
+## docker compose --file <path/to/neochad.v1.0.docker-compose.yml up --build
