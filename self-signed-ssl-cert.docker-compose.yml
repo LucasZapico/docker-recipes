@@ -1,0 +1,9 @@
+version: '3.7'
+services:
+  ssl-certs-generator:
+    image: stakater/ssl-certs-generator:1.0
+    volumes:
+      - /tmp/certs:/certs
+
+# docker compose --file self-signed-ssl-cert.docker-compose.yml up --build -d
+# docker run /tmp/certs:/certs -e SSL_SUBJECT=test.example.com stakater/ssl-certs-generator:1.0
