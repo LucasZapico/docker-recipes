@@ -1,5 +1,11 @@
 
+# vscode 
+.vscode 
+
 # dotenv environment variable files
 .env
 .env.**
 **.env**
+
+# certs files
+**.pem
