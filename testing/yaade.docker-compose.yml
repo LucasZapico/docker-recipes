@@ -1,0 +1,21 @@
+version: "3"
+services: 
+    yaade:
+        image: esperotech/yaade:latest
+        container_name: yaade
+        environment:
+            YAADE_ADMIN_USERNAME: "admin"
+        ports: 
+            - "9339:9339"
+        volumes:
+            - yaade:/app/data/
+        restart: unless-stopped
+volumes:
+    yaade: 
+
+##
+## REFRERENCE
+## 
+#
+# `docker compose --file yaade.docker-compose.yml up -d`
+# 
