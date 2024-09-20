@@ -61,11 +61,21 @@ nextcloud:
 ##
 pihole:
 	docker compose --file ~/dev/lib_docker-compose/pi-hole.docker-compose.yml up --build -d
+pihole-up:
+	make -C pihole up
+##
+## nginx proxy manager 
+ngx-prox:
+	make -C ngnx-proxy-mgn nginx-proxy-up
 ##
 ## make jellyfin
 ##
 jellyfinv1: 
 	docker compose --file ~/dev/lib_docker-compose/jellyfin.v1.0.docker-compose.yml up --build -d
+
+
+
+
 
 
 ##########
