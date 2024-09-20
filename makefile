@@ -8,7 +8,7 @@ all:  traefik jellyfin portainer audiobookshelf uptimekuma
 ##
 ##
 cloudflare-zero-trust: 
-	docker compose --file ~/dev/lib_docker-compose/cloudflare/cloudflare.docker-compose.yml --env ~/dev/lib_docker-compose/cloudflare/.env.cloudflare up --build -d
+	docker compose --file ~/dev/lib_docker-compose/cloudflare/cloudflare.docker-compose.yml --env-file ~/dev/lib_docker-compose/cloudflare/.env.cloudflare up --build -d
 
 ##
 ## make homarr
