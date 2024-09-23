@@ -1,0 +1,22 @@
+services:
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui
+    ports:
+      - "5353:8080"
+    volumes:
+      - open-webui:/app/backend/data
+      - ${DIR_PATH}:/app/backend/data/docs
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: always
+
+volumes:
+  open-webui:
+
+
+### Docker command
+# docker run -d -p 3000:8080 --add-host=host.docker.internal:host-gateway -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
+
+### Docker Compose command
+# docker compose --env-file .env.openwebui --file openwebui.docker-compose.yml up -d
