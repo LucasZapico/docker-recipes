@@ -1,0 +1,6 @@
+FROM ghcr.io/open-webui/open-webui:cuda
+
+##
+## Build 
+##
+# docker buildx build --file ./Dockerfile.openwebui --tag gatron/open-webui/open-webui:cuda --label note="openwebui" .

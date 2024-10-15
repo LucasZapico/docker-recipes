@@ -1,0 +1,39 @@
+# open webui for onboard GPU 
+services:
+  open-webui:
+    # image: gatron/open-webui/open-webui:cuda
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile.openwebui
+    image: ghcr.io/open-webui/open-webui:cuda
+    container_name: open-webui
+    ports:
+      - "5353:8080"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            # - driver: ${OLLAMA_GPU_DRIVER-nvidia}
+            # - count: ${OLLAMA_GPU_COUNT-1}
+            - capabilities: [gpu]
+    
+    env_file: .env.openwebui
+    volumes:
+      - open-webui:/app/backend/data
+      - ${DIR_PATH}:/app/backend/data/docs
+    extra_hosts:  
+      - "host.docker.internal:host-gateway"
+    restart: always
+
+volumes:
+  open-webui:
+
+
+### Docker command
+# docker run -d -p 5353:8080 --add-host=host.docker.internal:host-gateway -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
+
+### Docker Compose command
+# docker compose --env-file .env.openwebui --file nvidia-openwebui.docker-compose.yml up --build -d
+
+
+# docker run -d -p 5353:8080 --gpus all --add-host=host.docker.internal:host-gateway -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:cuda
