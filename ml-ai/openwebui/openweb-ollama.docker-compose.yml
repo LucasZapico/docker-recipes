@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  ollama:
+    restart: always
+    image: ollama/ollama
+    volumes:
+      - ollama:/root/.ollama
+    ports:
+      - 11434:11434
+    container_name: ollama
+    stdin_open: true
+    tty: true
+
+  open-webui:
+    restart: always
+    image: ghcr.io/open-webui/open-webui:cuda
+    container_name: open-webui
+    ports:
+      - "5353:8080"
+    volumes:
+      - open-webui:/app/backend/data
+      - ${DIR_PATH}:/app/backend/data/docs
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+ 
+    depends_on:
+      - ollama
+
+
+  
+
+volumes:
+  open-webui:
+  ollama:
+
+

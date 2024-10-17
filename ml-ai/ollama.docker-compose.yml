@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  ollama:
+    restart: always
+    image: ollama/ollama
+    volumes:
+      - ollama:/root/.ollama
+    ports:
+      - 11434:11434
+    container_name: ollama
+    stdin_open: true
+    tty: true
+
+volumes:
+  ollama:
+
+
+## DOCKER COMMAND
+# docker run -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
+
+## DOCKER COMPOSE COMMAND
+# docker compose --file ollama.docker-compose.yml up -d
