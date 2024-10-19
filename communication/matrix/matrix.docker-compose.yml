@@ -1,0 +1,11 @@
+services:
+  matrix-synapse:
+    image: matrix-org/synapse:latest
+    restart: unless-stopped
+    ports:
+      - 80:80
+    volumes:
+      - matrix-synapse-data:/data
+
+volumes:
+  matrix-synapse-data:
