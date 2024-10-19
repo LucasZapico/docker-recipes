@@ -1,0 +1,16 @@
+version: "3.9"
+
+services:
+  nextcloud-aio-mastercontainer:
+    image: nextcloud/all-in-one:latest
+    restart: always
+    ports:
+      - 80:80
+      - 8080:8080
+      - 8443:8443
+    volumes:
+      - nextcloud_aio_mastercontainer:/mnt/docker-aio-config
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    init: true
+    security_opt:
+      - label=disable
