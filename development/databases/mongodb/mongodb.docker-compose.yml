@@ -1,0 +1,29 @@
+version: '3.7'
+services:
+  za_mongodb_container: 
+    container_name: za-mongodb-starter
+    image: za/db/mongodb:starter
+    build:
+      context: .
+      dockerfile: './Dockerfile.mongodb'
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb_data_container:/data/db
+
+# use persistent volume
+volumes:
+  mongodb_data_container:
+
+# use specific network
+# networks:
+#   mongodb_net:
+#     name: mongodb-net
+#     driver: bridge
+
+# 
+# REFERENCE
+# 
+# docker compose --file ./mongodb.docker-compose.yaml up -d
+# or
+# docker compse --file ./mongodb.docker-compose.yaml up --build -d
