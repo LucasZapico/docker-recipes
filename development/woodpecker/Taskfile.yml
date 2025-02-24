@@ -1,0 +1,9 @@
+version: '3'
+
+env:
+  RECIPES: /home/za/development/libs/docker-recipes/development/woodpecker
+
+tasks: 
+  woodpecker: 
+    cmds: 
+      - docker compose --env-file $RECIPES/.env.woodpecker.prod --file  $RECIPES/woodpecker.docker-compose.yml up --build -d
