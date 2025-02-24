@@ -1,11 +1,10 @@
 # docker-compose.yml
-version: '3'
 
 services:
-  woodpecker-server:
+  woodpeckerci-server:
     env_file: 
       - .env.woodpecker.prod
-    container_name: ${DOCKER_CONTAINER_NAME}
+    container_name: woodpeckerci-server
     image: woodpeckerci/woodpecker-server:next
     volumes:
       - woodpecker-server-data:/var/lib/woodpecker/
@@ -17,15 +16,18 @@ services:
       - WOODPECKER_DEBUG_NOCOLOR=false  
       - WOODPECKER_ADMIN=${WOODPECKER_ADMIN}
       - WOODPECKER_DATABASE_DRIVER=postgres
-      - WOODPECKER_CALLBACK_URL=
+      - WOODPECKER_CALLBACK_URL=${WOODPECKER_CALLBACK_URL}
       - WOODPECKER_DATABASE_DATASOURCE=postgres://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@${DATABASE_HOST}/${DATABASE_NAME}?sslmode=disable
       - WOODPECKER_OPEN=true
       - WOODPECKER_HOST=${WOODPECKER_HOST}
-      - WOODPECKER_GITHUB=true
-      - WOODPECKER_GITHUB_CLIENT=ffcd2a147307c0dcac05
-      - WOODPECKER_GITHUB_SECRET=${WOODPECKER_GITHUB_SECRET}
-      - WOODPECKER_AGENT_SECRET=${WOODPECKER_GITHUB_SECRET}
+      # github config
       - WOODPECKER_GITHUB_SKIP_VERIFY=true
+      - WOODPECKER_GITHUB_URL=https://github.com
+      - WOODPECKER_GITHUB=true
+      - WOODPECKER_GITHUB_CLIENT=${WOODPECKER_GITHUB_CLIENT_ID}
+      - WOODPECKER_GITHUB_SECRET=${WOODPECKER_GITHUB_SECRET}
+      - WOODPECKER_AGENT_SECRET=${WOODPECKER_AGENT_SECRET}
+      
     networks:
       - woodpeckerci-net
     depends_on:
@@ -34,20 +36,20 @@ services:
   woodpecker-agent:
     env_file:
       - .env.woodpecker.prod
-    container_name: woodpeckerci_agent_1
+    container_name: woodpeckerci-agent-1
     image: woodpeckerci/woodpecker-agent:next
     command: agent
     restart: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      - WOODPECKER_SERVER=woodpecker-server:9000
+      - WOODPECKER_SERVER=woodpeckerci-server:9000
       - WOODPECKER_AGENT_SECRET=${WOODPECKER_AGENT_SECRET}
     networks:
       - woodpeckerci-net
     depends_on:
-      - woodpecker-dbr
-      - woodpecker-server
+      - woodpecker-db
+      - woodpeckerci-server
 
   woodpecker-db:
     container_name: woodpeckerci-db
