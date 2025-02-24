@@ -4,8 +4,8 @@ version: '3'
 services:
   woodpecker-server:
     env_file: 
-      - production.env
-    container_name: woodpeckerci-server
+      - .env.woodpecker.prod
+    container_name: ${DOCKER_CONTAINER_NAME}
     image: woodpeckerci/woodpecker-server:next
     volumes:
       - woodpecker-server-data:/var/lib/woodpecker/
@@ -15,16 +15,16 @@ services:
       - WOODPECKER_LOG_LEVEL=trace
       - WOODPECKER_DEBUG_PRETTY=true
       - WOODPECKER_DEBUG_NOCOLOR=false  
-      - WOODPECKER_ADMIN=wpci_admin
+      - WOODPECKER_ADMIN=${WOODPECKER_ADMIN}
       - WOODPECKER_DATABASE_DRIVER=postgres
-      - WOODPECKER_CALLBACK_URL=http://192.168.1.155/authorize
-      - WOODPECKER_DATABASE_DATASOURCE=postgres://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@192.168.1.155:5432/woodpeckerci_db_1?sslmode=disable
+      - WOODPECKER_CALLBACK_URL=
+      - WOODPECKER_DATABASE_DATASOURCE=postgres://${DATABASE_USERNAME}:${DATABASE_PASSWORD}@${DATABASE_HOST}/${DATABASE_NAME}?sslmode=disable
       - WOODPECKER_OPEN=true
-      - WOODPECKER_HOST=https://woodpeckerci.lucaszapico.space
+      - WOODPECKER_HOST=${WOODPECKER_HOST}
       - WOODPECKER_GITHUB=true
       - WOODPECKER_GITHUB_CLIENT=ffcd2a147307c0dcac05
-      - WOODPECKER_GITHUB_SECRET=ce1b5db161f051cf8b31702995ba741071a96a41
-      - WOODPECKER_AGENT_SECRET=f3d080514db0d285025a2d0303b0fbed0d13921f589968f36f93f051cdcf0f97
+      - WOODPECKER_GITHUB_SECRET=${WOODPECKER_GITHUB_SECRET}
+      - WOODPECKER_AGENT_SECRET=${WOODPECKER_GITHUB_SECRET}
       - WOODPECKER_GITHUB_SKIP_VERIFY=true
     networks:
       - woodpeckerci-net
@@ -33,7 +33,7 @@ services:
 
   woodpecker-agent:
     env_file:
-      - production.env 
+      - .env.woodpecker.prod
     container_name: woodpeckerci_agent_1
     image: woodpeckerci/woodpecker-agent:next
     command: agent
@@ -42,7 +42,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - WOODPECKER_SERVER=woodpecker-server:9000
-      - WOODPECKER_AGENT_SECRET=f3d080514db0d285025a2d0303b0fbed0d13921f589968f36f93f051cdcf0f97
+      - WOODPECKER_AGENT_SECRET=${WOODPECKER_AGENT_SECRET}
     networks:
       - woodpeckerci-net
     depends_on:
@@ -55,7 +55,7 @@ services:
     restart: unless-stopped
     image: postgres:14
     env_file:
-      - production.env 
+      - .env.woodpecker.prod
     environment: 
       - POSTGRES_DB=${DATABASE_NAME}
       - POSTGRES_USER=${DATABASE_USERNAME}
